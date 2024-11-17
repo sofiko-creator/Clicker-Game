@@ -24,14 +24,14 @@ public class Game : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("SaveObj"))
         {
-          //  SaveObj = JsonUtility.FromJson<Save>(PlayerPrefs.GetString("SaveObj"));
-           // Score = SaveObj.Score;
-           // Cost = SaveObj.Cost;
-           // ClickScore = SaveObj.ClickScore;
-          //  CountLvl = SaveObj.CountLvl;
-          //  CostText.text = "Upgrade " + Cost.ToString();
-          //  AddScoreText.text = "+" + ClickScore.ToString();
-          //  LvlText.text = "LV " + CountLvl.ToString();
+           SaveObj = JsonUtility.FromJson<Save>(PlayerPrefs.GetString("SaveObj"));
+           Score = SaveObj.Score;
+           Cost = SaveObj.Cost;
+           ClickScore = SaveObj.ClickScore;
+           CountLvl = SaveObj.CountLvl;
+           CostText.text = "Upgrade " + Cost.ToString();
+           AddScoreText.text = "+" + ClickScore.ToString();
+           LvlText.text = "LV " + CountLvl.ToString();
         }
     }
 

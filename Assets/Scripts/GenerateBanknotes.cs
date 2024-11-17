@@ -8,29 +8,29 @@ public class GenerateBanknotes : MonoBehaviour
     public GameObject PrefabBanknote; 
     public Button ButtonClick;
     public RectTransform ButtonUpTransform;
-    public float InitialSpeed = 5f; // Начальная скорость вылета купюры
-    public float FallSpeed = 7f; // Скорость падения купюры
+    public float InitialSpeed = 5f; // РќР°С‡Р°Р»СЊРЅР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ РІС‹Р»РµС‚Р° РєСѓРїСЋСЂС‹
+    public float FallSpeed = 7f; // РЎРєРѕСЂРѕСЃС‚СЊ РїР°РґРµРЅРёСЏ РєСѓРїСЋСЂС‹
 
     void Start()
     {
         if (ButtonClick != null)
         {
-            ButtonClick.onClick.AddListener(SpawnAtMousePosition); // Добавляем слушатель
+            ButtonClick.onClick.AddListener(SpawnAtMousePosition); // Р”РѕР±Р°РІР»СЏРµРј СЃР»СѓС€Р°С‚РµР»СЊ
         }
         else
         {
-            Debug.LogError("ButtonClick не назначен в инспекторе!");
+            Debug.LogError("ButtonClick РЅРµ РЅР°Р·РЅР°С‡РµРЅ РІ РёРЅСЃРїРµРєС‚РѕСЂРµ!");
         }
     }
 
     void SpawnAtMousePosition()
     {
-        Vector3 mousePosition = Input.mousePosition; // Координаты мыши на экране
+        Vector3 mousePosition = Input.mousePosition; // РљРѕРѕСЂРґРёРЅР°С‚С‹ РјС‹С€Рё РЅР° СЌРєСЂР°РЅРµ
         mousePosition.z = 90.0f; 
 
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        // Создаём объект на месте мыши
+        // РЎРѕР·РґР°С‘Рј РѕР±СЉРµРєС‚ РЅР° РјРµСЃС‚Рµ РјС‹С€Рё
         if (PrefabBanknote != null)
         {
             GameObject NewBanknote = Instantiate(PrefabBanknote, worldPosition, Quaternion.identity);
@@ -44,19 +44,19 @@ public class GenerateBanknotes : MonoBehaviour
         }
         else
         {
-            Debug.LogError("PrefabBanknote не назначен в инспекторе!");
+            Debug.LogError("PrefabBanknote РЅРµ РЅР°Р·РЅР°С‡РµРЅ РІ РёРЅСЃРїРµРєС‚РѕСЂРµ!");
         }
     }
 }
 
 public class BanknoteMove : MonoBehaviour
 {
-    private float TopY; // Позиция индикатора уровня апгрейда
-    private float InitSpeed; // Начальная скорость
-    private float FallSpeed; // Скорость падения
-    private bool IsFalling = false; // Началось ли падение
-    private Vector3 RandomDirection; // Случайное направление движения
-    private float RandomRotation; // Случайное вращение
+    private float TopY; // РџРѕР·РёС†РёСЏ РёРЅРґРёРєР°С‚РѕСЂР° СѓСЂРѕРІРЅСЏ Р°РїРіСЂРµР№РґР°
+    private float InitSpeed; // РќР°С‡Р°Р»СЊРЅР°СЏ СЃРєРѕСЂРѕСЃС‚СЊ
+    private float FallSpeed; // РЎРєРѕСЂРѕСЃС‚СЊ РїР°РґРµРЅРёСЏ
+    private bool IsFalling = false; // РќР°С‡Р°Р»РѕСЃСЊ Р»Рё РїР°РґРµРЅРёРµ
+    private Vector3 RandomDirection; // РЎР»СѓС‡Р°Р№РЅРѕРµ РЅР°РїСЂР°РІР»РµРЅРёРµ РґРІРёР¶РµРЅРёСЏ
+    private float RandomRotation; // РЎР»СѓС‡Р°Р№РЅРѕРµ РІСЂР°С‰РµРЅРёРµ
 
     public void Init(float _TopY, float _InitSpeed, float _FallSpeed)
     {
@@ -64,8 +64,8 @@ public class BanknoteMove : MonoBehaviour
         this.InitSpeed = _InitSpeed;
         this.FallSpeed = _FallSpeed;
 
-        // Генерация случайного направления и вращения
-        RandomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(0.5f, 1f), 0).normalized; // ?
+        // Р“РµРЅРµСЂР°С†РёСЏ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ РЅР°РїСЂР°РІР»РµРЅРёСЏ Рё РІСЂР°С‰РµРЅРёСЏ
+        RandomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(0.5f, 1f), 0).normalized; 
         RandomRotation = Random.Range(-360f, 360f);
     }
 
@@ -74,19 +74,19 @@ public class BanknoteMove : MonoBehaviour
         if (!IsFalling)
         {
             transform.position += RandomDirection * InitSpeed * Time.deltaTime;
-            transform.Rotate(Vector3.forward * RandomRotation * Time.deltaTime); // Создаём вращение вокруг оси z
+            transform.Rotate(Vector3.forward * RandomRotation * Time.deltaTime); // РЎРѕР·РґР°С‘Рј РІСЂР°С‰РµРЅРёРµ РІРѕРєСЂСѓРі РѕСЃРё z
 
-            // Проверка на достижение границ экрана
+            // РџСЂРѕРІРµСЂРєР° РЅР° РґРѕСЃС‚РёР¶РµРЅРёРµ РіСЂР°РЅРёС† СЌРєСЂР°РЅР°
             Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
 
-            if ((screenPosition.x <= 0) || (screenPosition.x >= Screen.width)) // Левая или правая граница
+            if ((screenPosition.x <= 0) || (screenPosition.x >= Screen.width)) // Р›РµРІР°СЏ РёР»Рё РїСЂР°РІР°СЏ РіСЂР°РЅРёС†Р°
             {
-                RandomDirection.x = -RandomDirection.x; // Меняем направление по X
+                RandomDirection.x = -RandomDirection.x; // РњРµРЅСЏРµРј РЅР°РїСЂР°РІР»РµРЅРёРµ РїРѕ X
             }
 
-            if ((screenPosition.y <= 0) || (screenPosition.y >= Screen.height)) // Верхняя или нижняя граница
+            if ((screenPosition.y <= 0) || (screenPosition.y >= Screen.height)) // Р’РµСЂС…РЅСЏСЏ РёР»Рё РЅРёР¶РЅСЏСЏ РіСЂР°РЅРёС†Р°
             {
-                RandomDirection.y = -RandomDirection.y; // Меняем направление по Y
+                RandomDirection.y = -RandomDirection.y; // РњРµРЅСЏРµРј РЅР°РїСЂР°РІР»РµРЅРёРµ РїРѕ Y
             }
 
 
@@ -97,11 +97,11 @@ public class BanknoteMove : MonoBehaviour
         }
         else
         {
-            // Падение вниз
+            // РџР°РґРµРЅРёРµ РІРЅРёР·
             transform.position += Vector3.down * FallSpeed * Time.deltaTime;
         }
 
-        // Удаление, если купюра скрылась за нижней частью экрана
+        // РЈРґР°Р»РµРЅРёРµ, РµСЃР»Рё РєСѓРїСЋСЂР° СЃРєСЂС‹Р»Р°СЃСЊ Р·Р° РЅРёР¶РЅРµР№ С‡Р°СЃС‚СЊСЋ СЌРєСЂР°РЅР°
         if (transform.position.y < Camera.main.ScreenToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).y)
         {
             Destroy(gameObject);
