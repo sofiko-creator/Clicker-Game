@@ -18,24 +18,6 @@ public class Game : MonoBehaviour
     public int Cost;
     public Button ButtonUpgrade;
 
-    private Save SaveObj = new Save();
-
-    private void Awake()
-    {
-        if (PlayerPrefs.HasKey("SaveObj"))
-        {
-           SaveObj = JsonUtility.FromJson<Save>(PlayerPrefs.GetString("SaveObj"));
-           Score = SaveObj.Score;
-           Cost = SaveObj.Cost;
-           ClickScore = SaveObj.ClickScore;
-           CountLvl = SaveObj.CountLvl;
-           CostText.text = "Upgrade " + Cost.ToString();
-           AddScoreText.text = "+" + ClickScore.ToString();
-           LvlText.text = "LV " + CountLvl.ToString();
-        }
-    }
-
-    // Update is called once per frame
     void Update()
     {
         ScoreText.text = Score.ToString();
@@ -49,7 +31,6 @@ public class Game : MonoBehaviour
         }
     }
 
-
     public void OnClickButton()
     {
         Score = Score + ClickScore;
@@ -59,33 +40,22 @@ public class Game : MonoBehaviour
     {
         if(Score >= Cost)
         {
+            // Уменьшение текущего счёта на стоимость улучшения
             Score -= Cost;
-            Cost *= 2;
-            ClickScore *= 2;
+
+            // Увеличение уровня улучшения
+            CountLvl++;
+
+            // Увеличение стоимости улучшения
+            Cost = Mathf.CeilToInt(10 * Mathf.Pow(1.15f, CountLvl)); // 15% рост стоимости
+
+            // Увеличение прироста за клик с учётом смещения
+            ClickScore = Mathf.CeilToInt(1 * Mathf.Pow(1 + CountLvl, 1.2f));
+
+            // Обновление UI
             CostText.text = "Upgrade " + Cost.ToString();
             AddScoreText.text = "+" + ClickScore.ToString();
-            CountLvl++;
             LvlText.text = "LV " + CountLvl.ToString();
         }
     }
-    
-    private void OnApplicationQuit()
-    {
-        SaveObj.Score = Score;
-        SaveObj.Cost = Cost;    
-        SaveObj.ClickScore = ClickScore;
-        SaveObj.CountLvl = CountLvl;
-
-        PlayerPrefs.SetString("SaveObj", JsonUtility.ToJson(SaveObj));
-    }
-
-}
-
-[Serializable]
-public class Save
-{
-    public int Score;
-    public int ClickScore;
-    public int CountLvl;
-    public int Cost;
 }

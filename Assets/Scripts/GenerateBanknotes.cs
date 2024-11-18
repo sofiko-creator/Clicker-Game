@@ -9,7 +9,7 @@ public class GenerateBanknotes : MonoBehaviour
     public Button ButtonClick;
     public RectTransform ButtonUpTransform;
     public float InitialSpeed = 5f; // Начальная скорость вылета купюры
-    public float FallSpeed = 7f; // Скорость падения купюры
+    public float FallSpeed = 15f; // Скорость падения купюры
 
     void Start()
     {
